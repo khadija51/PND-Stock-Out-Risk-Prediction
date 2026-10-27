@@ -6,6 +6,41 @@ import plotly.express as px
 
 st.set_page_config(page_title="PND Stock-Out Predictor", layout="wide")
 
+# ==========================================
+# 🔒 PASSWORD PROTECTION (YAHAN PASSWORD HAI)
+# ==========================================
+def check_password():
+    """Returns `True` if the user had the correct password."""
+    def password_entered():
+        if st.session_state["password"] == "stock out analysis 321":  # <-- APNA PASSWORD YAHAN LIKHO
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]  # don't store password
+        else:
+            st.session_state["password_correct"] = False
+
+    if "password_correct" not in st.session_state:
+        # First run, show input for password.
+        st.title("🔒 Private Application")
+        st.markdown("### Please enter the password to access the PND Stock-Out Predictor.")
+        st.text_input("Password", type="password", on_change=password_entered, key="password")
+        return False
+    elif not st.session_state["password_correct"]:
+        # Password incorrect, show input + error.
+        st.title("🔒 Private Application")
+        st.text_input("Password", type="password", on_change=password_entered, key="password")
+        st.error("😕 Password incorrect. Please try again.")
+        return False
+    else:
+        # Password correct.
+        return True
+
+if not check_password():
+    st.stop()  # Do not continue if check_password is not True.
+
+# ==========================================
+# 🚀 MAIN APP STARTS HERE
+# ==========================================
+
 st.title("🛒 PND Multan — Smart Stock-Out Predictor")
 st.markdown("### *AI-powered system that predicts stock-outs 7 days in advance*")
 
